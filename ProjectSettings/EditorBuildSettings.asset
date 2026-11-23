@@ -17,4 +17,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Game001_CoreEscape/Scenes/Results.unity
     guid: 6797438394da4c049a91a4c66734f915
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5475cef948afc804abe3e1cc022bd571, type: 3}
