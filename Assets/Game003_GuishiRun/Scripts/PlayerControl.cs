@@ -33,12 +33,18 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private RopperClimber ropperClimber;
 
+    [Header("体力消耗设置")]
+    [SerializeField]
+    private float dashSpend = 10f;
+    private float runSpendVelocity = 5f;
+
 
 
 
 
     private Rigidbody2D rb;
     private int moveIndirection = 0;
+    public int FaceDirection => moveIndirection;
 
     private bool isGrounded;
     private bool isJumping = false;
@@ -54,6 +60,8 @@ public class PlayerControl : MonoBehaviour
     private bool nearbyRope = false;
     private float gravityScaleAtStart;
 
+    private PlayerStamina playerStamina;
+
 
 
 
@@ -63,6 +71,7 @@ public class PlayerControl : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         gravityScaleAtStart = rb.gravityScale;
+        playerStamina = rb.GetComponent<PlayerStamina>();
     }
 
     // Update is called once per frame
@@ -87,16 +96,44 @@ public class PlayerControl : MonoBehaviour
             jumpCount = 0;
         }
 
-        if(isRunning)
+
+        if(climbRequest){
+            
+            climbRequest = false;
+            if(isClimbing)
+            {
+                ExitClimb();
+            }
+            else if(nearbyRope && !isClimbing && moveIndirection.Equals(0))
+            {
+                EnterClimb();
+            }
+        }
+        if(isClimbing)
+        {
+            Climb();
+            isDashing = false;
+            isJumping = false;
+            isRunning = false;
+            return;
+        }
+
+        bool dashRequested = isDashing;
+        isDashing = false;
+
+        if (dashRequested && moveIndirection != 0 &&
+        playerStamina.TryStaminaSpeed(dashSpend))
+        {
+            Dash();
+        }   
+        else if (isRunning && moveIndirection != 0 &&
+        playerStamina.TryStaminaSpeed(runSpendVelocity * Time.fixedDeltaTime))
         {
             Run();
         }
-        else if(isDashing)
-        {
-            Dash();
-        }
         else
         {
+            playerStamina.Recover();
             Move();
         }
        
@@ -106,22 +143,6 @@ public class PlayerControl : MonoBehaviour
         }
 
 
-        if(climbRequest){
-            if(isClimbing)
-            {
-                ExitClimb();
-                climbRequest = false;
-            }
-            else if(nearbyRope && !isClimbing && moveIndirection.Equals(0))
-            {
-                EnterClimb();
-                climbRequest = false;
-            }
-        }
-        if(isClimbing)
-        {
-            Climb();
-        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -157,9 +178,11 @@ public class PlayerControl : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             float leftshiftHoldTime = Time.time - leftshiftTimeAt;
-            if(leftshiftHoldTime >= shiftHoldThreshold)
+            if(leftshiftHoldTime >= shiftHoldThreshold )
             {
+
                 isRunning = true;
+            
             }
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))

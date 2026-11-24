@@ -5,17 +5,20 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game001_CoreEscape/Scenes/Boot.unity
     guid: 63994744b0be0314db622277fffe5fa1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game001_CoreEscape/Scenes/MainMenu.unity
     guid: 4bce6b46afab821479f2b292c90cb5f1
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game001_CoreEscape/Scenes/Level01.unity
     guid: 1ae153843b98f08488c3be253b59da33
-  - enabled: 1
+  - enabled: 0
     path: Assets/Game001_CoreEscape/Scenes/Results.unity
     guid: 6797438394da4c049a91a4c66734f915
+  - enabled: 1
+    path: Assets/Game003_GuishiRun/Scenes/Guishi_Graybox.unity
+    guid: 34e17997a4d89f748b380e6510c244e3
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 5475cef948afc804abe3e1cc022bd571, type: 3}
